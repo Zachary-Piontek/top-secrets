@@ -4,41 +4,27 @@ const request = require('supertest');
 const app = require('../lib/app');
 const UserService = require('../lib/services/UserService');
 
-describe('backend-express-template routes', () => {
-  beforeEach(() => {
-    return setup(pool);
-  });
-  it('example test - delete me!', () => {
-    expect(1).toEqual(1);
-  });
-  afterAll(() => {
-    pool.end();
-  });
-});
 
-const mockUser = {
-  firstName: 'Test',
-  lastName: 'User',
-  email: 'test@example.com',
-  password: '12345',
+const secretUser = {
+  firstName: 'James',
+  lastName: 'Bond',
+  email: '007@Qbranch.gov',
+  password: 'Skyfall',
 };
 
 const registerAndLogin = async (userProps = {}) => {
-  const password = userProps.password ?? mockUser.password;
-  // Create an "agent" that gives us the ability
-  // to store cookies between requests in a test
+  const password = userProps.password ?? secretUser.password;
+
   const agent = request.agent(app);
-
-  // Create a user to sign in with
-  const user = await UserService.create({ ...mockUser, ...userProps });
-
-  // ...then sign in
+  
+  const user = await UserService.create({ ...secretUser, ...userProps });
+  
   const { email } = user;
   await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
 };
 
-describe('secret routes', () => {
+describe('DOD secret routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
@@ -48,9 +34,10 @@ describe('secret routes', () => {
   });
 
   it('create new user', async () => {
-    const res = await request(app).post('/api/v1/users').send(mockUser);
-    const { firstName, lastName, email } = mockUser;
-
+    const res = await request(app).post('/api/v1/users').send(secretUser);
+    const { firstName, lastName, email } = secretUser;
+    console.log(secretUser);
+    console.log(res.body);
     expect(res.body).toEqual({
       id: expect.any(String),
       firstName,
@@ -58,4 +45,6 @@ describe('secret routes', () => {
       email,
     });
   });
+
+
 });
