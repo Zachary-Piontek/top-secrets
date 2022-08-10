@@ -64,6 +64,12 @@ describe('DOD secret routes', () => {
     console.log(resp.status);
     expect(resp.status).toBe(204);
   });
+
+  it('return secrets to users logged in', async () => {
+    const res = await request(app).get('/api/vi/secrets');
+    console.log(res.body);
+    expect(res.body.length).toEqual(2);
+  });
   
 
 });
