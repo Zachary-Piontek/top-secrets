@@ -57,7 +57,6 @@ describe('DOD secret routes', () => {
     });
   });
 
-  
   it('delete user session(logout)', async () => {
     const [agent] = await registerAndLogin();
     const resp = await agent.delete('/api/v1/users/sessions');
@@ -66,7 +65,8 @@ describe('DOD secret routes', () => {
   });
 
   it('return secrets to users logged in', async () => {
-    const res = await request(app).get('/api/vi/secrets');
+    const [agent] = await registerAndLogin();
+    const res = await agent.get('/api/vi/secrets');
     console.log(res.body);
     expect(res.body.length).toEqual(2);
   });
