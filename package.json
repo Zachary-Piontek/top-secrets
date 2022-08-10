@@ -27,7 +27,7 @@
     "@types/pg": "^8.6.5",
     "eslint": "^8.17.0",
     "jest": "^28.1.0",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "prettier": "^2.6.2",
     "supertest": "^6.2.3"
   },
