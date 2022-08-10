@@ -57,12 +57,13 @@ describe('DOD secret routes', () => {
     });
   });
 
+  
   it('delete user session(logout)', async () => {
     const [agent] = await registerAndLogin();
     const resp = await agent.delete('/api/v1/users/sessions');
     console.log(resp.status);
     expect(resp.status).toBe(204);
   });
-
+  
 
 });
