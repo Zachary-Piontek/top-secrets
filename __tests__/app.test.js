@@ -29,10 +29,7 @@ describe('DOD secret routes', () => {
     return setup(pool);
   });
 
-  afterAll(() => {
-    pool.end();
-  });
-
+  
   it('create new user', async () => {
     const res = await request(app).post('/api/v1/users').send(secretUser);
     const { firstName, lastName, email } = secretUser;
@@ -45,7 +42,7 @@ describe('DOD secret routes', () => {
       email,
     });
   });
-
+  
   it('return current user', async () => {
     const [agent, user] = await registerAndLogin();
     const me = await agent.get('/api/v1/users/me');
@@ -56,20 +53,23 @@ describe('DOD secret routes', () => {
       iat: expect.any(Number),
     });
   });
-
+  
   it('delete user session(logout)', async () => {
     const [agent] = await registerAndLogin();
     const resp = await agent.delete('/api/v1/users/sessions');
     console.log(resp.status);
     expect(resp.status).toBe(204);
   });
-
+  
   it('return secrets to users logged in', async () => {
     const [agent] = await registerAndLogin();
-    const res = await agent.get('/api/vi/secrets');
+    const res = await agent.get('/api/v1/secrets');
     console.log(res.body);
     expect(res.body.length).toEqual(2);
   });
   
-
+  afterAll(() => {
+    pool.end();
+  });
+  
 });
